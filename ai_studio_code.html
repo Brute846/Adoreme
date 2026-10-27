@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="theme-color" content="#0d0208" />
+  <title>/ADOREME — Elite Discord Community</title>
+  <meta name="description" content="Better members, chillin vibes and a lot of enjoyment. Join the /ADOREME community on Discord." />
+  
+  <!-- Fonts: Space Grotesk for modern headings, Inter for clean mobile readability -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;0,800;1,700;1,800&family=Space+Grotesk:wght@600;700;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Atmospheric Canvas Layer (Rose Petals & Neon Dust) -->
+  <canvas id="ambient-canvas" aria-hidden="true"></canvas>
+
+  <!-- Atmospheric Glow Overlays -->
+  <div class="ambient-glow glow-top" aria-hidden="true"></div>
+  <div class="ambient-glow glow-center" aria-hidden="true"></div>
+  <div class="ambient-glow glow-bottom" aria-hidden="true"></div>
+
+  <!-- STICKY HEADER -->
+  <header class="site-header" id="header">
+    <div class="header-container">
+      <a href="#hero" class="brand-logo" aria-label="Adoreme Home">
+        <span class="brand-text">/ADOREME</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="desktop-nav" aria-label="Main Navigation">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#team" class="nav-link">Team</a>
+        <a href="#events" class="nav-link">Events</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+        <a href="#" class="btn-nav join-discord-trigger" target="_blank" rel="noopener noreferrer">
+          Join Server
+        </a>
+      </nav>
+
+      <!-- Mobile Hamburger Button -->
+      <button class="mobile-menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="bar bar-1"></span>
+        <span class="bar bar-2"></span>
+        <span class="bar bar-3"></span>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+      <nav class="mobile-nav-links">
+        <a href="#about" class="mobile-link">About</a>
+        <a href="#team" class="mobile-link">Team</a>
+        <a href="#events" class="mobile-link">Events</a>
+        <a href="#faq" class="mobile-link">FAQ</a>
+        <a href="#" class="mobile-cta join-discord-trigger" target="_blank" rel="noopener noreferrer">
+          🎮 Join Discord
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero-section" id="hero">
+      <div class="hero-content">
+        <span class="hero-pill">Official Discord Community</span>
+        
+        <h1 class="hero-title">
+          <span class="title-line">WELCOME</span>
+          <span class="title-line">TO</span>
+          <span class="title-line gradient-brand">/ADOREME</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          "Better members, chillin vibes and a lot of enjoyment."
+        </p>
+
+        <!-- 3 Primary Action Buttons -->
+        <div class="hero-cta-group">
+          <a href="#" class="btn btn-primary join-discord-trigger" target="_blank" rel="noopener noreferrer">
+            <span class="btn-icon">🎮</span>
+            <span class="btn-text">JOIN /ADOREME</span>
+          </a>
+
+          <a href="#about" class="btn btn-secondary">
+            <span class="btn-icon">ℹ️</span>
+            <span class="btn-text">MORE INFO</span>
+          </a>
+
+          <button type="button" class="btn btn-tertiary" id="viewEventBtn">
+            <span class="btn-icon">🎭</span>
+            <span class="btn-text">VIEW LIVE EVENT</span>
+          </button>
+        </div>
+
+        <div class="server-status-pill">
+          <span class="pulse-indicator"></span>
+          <span class="status-text">Voice lounges and chat rooms active now</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section class="about-section" id="about">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-eyebrow">DISCOVER OUR VIBE</span>
+          <h2 class="section-title">MORE THAN JUST A SERVER</h2>
+          <p class="section-desc">
+            "A place to meet new people, make memories, enjoy good conversations, and find your people."
+          </p>
+        </div>
+
+        <!-- 4 Core Feature Cards -->
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-icon-wrapper">
+              <span class="feature-icon">✨</span>
+            </div>
+            <h3 class="feature-title">Active Community</h3>
+            <p class="feature-text">
+              Always someone to chat with. Dedicated text rooms for daily banter, memes, fit checks, and late-night thoughts.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon-wrapper">
+              <span class="feature-icon">🎮</span>
+            </div>
+            <h3 class="feature-title">Gaming and Events</h3>
+            <p class="feature-text">
+              Custom lobbies for Valorant, Roblox, Among Us, and party games with friendly competitions and prizes.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon-wrapper">
+              <span class="feature-icon">💖</span>
+            </div>
+            <h3 class="feature-title">New Friendships</h3>
+            <p class="feature-text">
+              Welcoming environment free from toxic gatekeeping. Find real friends who match your energy.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon-wrapper">
+              <span class="feature-icon">🎙️</span>
+            </div>
+            <h3 class="feature-title">Fun Conversations</h3>
+            <p class="feature-text">
+              Vibrant 24/7 voice channels with music bots, study rooms, late-night lo-fi lounges, and podcast hours.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- MEET THE TEAM SECTION -->
+    <section class="team-section" id="team">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-eyebrow">OUR INNER CIRCLE</span>
+          <h2 class="section-title">
+            Meet The <br />
+            <span class="gradient-brand">Team</span>
+          </h2>
+          <p class="section-desc">"The legends keeping the server vibes alive."</p>
+        </div>
+
+        <!-- Dynamic Member Cards Rendered by JS -->
+        <div class="team-stack" id="teamContainer" role="list">
+          <!-- Fallback placeholder content before script hydrates -->
+          <div class="team-loading">Loading /ADOREME team roster...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMMUNITY EVENTS SECTION -->
+    <section class="events-section" id="events">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-eyebrow">HAPPENINGS</span>
+          <h2 class="section-title">WHAT'S HAPPENING?</h2>
+          <p class="section-desc">Scheduled activities, competitions, and weekend voice parties.</p>
+        </div>
+
+        <div class="events-grid" id="eventsContainer">
+          <!-- Populated from config.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="faq-section" id="faq">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-eyebrow">QUESTIONS?</span>
+          <h2 class="section-title">FREQUENTLY ASKED</h2>
+          <p class="section-desc">Everything you need to know before joining.</p>
+        </div>
+
+        <div class="accordion" id="faqAccordion">
+          <!-- Populated from config.js -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <span class="brand-text">/ADOREME</span>
+        <p class="footer-tagline">
+          The premier dark-lounge community on Discord. Join our sanctuary of chill vibes, gaming, and friends.
+        </p>
+      </div>
+
+      <div class="footer-links-group">
+        <h4 class="footer-heading">Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#team">Team</a></li>
+          <li><a href="#events">Events</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-group">
+        <h4 class="footer-heading">Connect</h4>
+        <ul class="footer-links">
+          <li>
+            <a href="#" class="join-discord-trigger" target="_blank" rel="noopener noreferrer">
+              Join Discord Server
+            </a>
+          </li>
+          <li><a href="#events" id="footerEventLink">Upcoming Schedule</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; <span id="currentYear"></span> /ADOREME. All rights reserved. Not affiliated with Discord Inc.</p>
+    </div>
+  </footer>
+
+  <!-- CUSTOM MODAL: EVENT STATUS POPUP -->
+  <div class="modal-backdrop" id="eventModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <button class="modal-close" id="closeModalBtn" aria-label="Close dialog">&times;</button>
+      <div class="modal-icon">🎭</div>
+      <h3 class="modal-title" id="modalTitle">No Live Event Scheduled</h3>
+      <p class="modal-body" id="modalBody">
+        There is no live stream or voice stage happening at this exact moment. Join our Discord community to get notified the second the next event begins!
+      </p>
+      <div class="modal-actions">
+        <a href="#" class="btn btn-primary join-discord-trigger" target="_blank" rel="noopener noreferrer">
+          🎮 Join Discord For Updates
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

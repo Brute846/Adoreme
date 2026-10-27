@@ -1,0 +1,12 @@
+# /ADOREME — Official Discord Community Website
+
+A dark burgundy & neon magenta website built mobile-first for the /ADOREME community.
+
+---
+
+### 1. How to Test & Preview Locally
+You can run this project in two clicks without installing heavy tools:
+1. Open the project folder in **VS Code**.
+2. Click **Go Live** via the Live Server extension, or run:
+   ```bash
+   npx serve .
