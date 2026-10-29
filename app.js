@@ -60,30 +60,46 @@ function renderTeam() {
   CONFIG.TEAM.forEach((member, index) => {
     const card = document.createElement('article');
     card.className = 'team-card';
-    card.setAttribute('data-accent', member.accent || 'magenta');
+    card.dataset.accent = member.accent || 'magenta';
     card.setAttribute('role', 'listitem');
     card.style.animationDelay = `${index * 80}ms`;
 
-    card.innerHTML = `
-      <div class="team-avatar-wrapper">
-        <img 
-          src="${member.avatar}" 
-          alt="${member.name} Profile Picture" 
-          class="team-avatar"
-          loading="lazy"
-          onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(
-            member.name
-          )}&background=2b081c&color=ff2a85&size=200&bold=true';"
-        />
-      </div>
-      <h3 class="team-name">${member.name}</h3>
-      <span class="role-badge">${member.role}</span>
-      <p class="team-bio">${member.bio || 'Adoreme Community Leader'}</p>
-    `;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'team-avatar-wrapper';
 
+    const avatar = document.createElement('img');
+    avatar.className = 'team-avatar';
+    avatar.src = member.avatar;
+    avatar.alt = `${member.name} icon`;
+    avatar.loading = 'lazy';
+
+    avatar.onerror = () => {
+      avatar.onerror = null;
+      avatar.src =
+        'https://ui-avatars.com/api/?name=' +
+        encodeURIComponent(member.name) +
+        '&background=2b081c&color=ff2a85&size=200&bold=true';
+    };
+
+    wrapper.appendChild(avatar);
+
+    const name = document.createElement('h3');
+    name.className = 'team-name';
+    name.textContent = member.name;
+
+    const role = document.createElement('span');
+    role.className = 'role-badge';
+    role.textContent = member.role;
+
+    const bio = document.createElement('p');
+    bio.className = 'team-bio';
+    bio.textContent = member.bio || 'Adoreme Community Leader';
+
+    card.append(wrapper, name, role, bio);
     container.appendChild(card);
   });
 }
+
 
 /* ====================================================================
    4. POPULATE COMMUNITY EVENTS
