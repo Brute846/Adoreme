@@ -51,6 +51,7 @@ function initMobileNavigation() {
 /* ====================================================================
    3. POPULATE TEAM SECTION (With Role Accents & Smooth Fallbacks)
    ==================================================================== */
+
 function renderTeam() {
   const container = document.getElementById('teamContainer');
   if (!container) return;
@@ -64,6 +65,7 @@ function renderTeam() {
     card.setAttribute('role', 'listitem');
     card.style.animationDelay = `${index * 80}ms`;
 
+    // Profile picture
     const wrapper = document.createElement('div');
     wrapper.className = 'team-avatar-wrapper';
 
@@ -73,6 +75,7 @@ function renderTeam() {
     avatar.alt = `${member.name} icon`;
     avatar.loading = 'lazy';
 
+    // Fallback if the profile picture fails to load
     avatar.onerror = () => {
       avatar.onerror = null;
       avatar.src =
@@ -83,22 +86,22 @@ function renderTeam() {
 
     wrapper.appendChild(avatar);
 
+    // Member name
     const name = document.createElement('h3');
     name.className = 'team-name';
     name.textContent = member.name;
 
+    // Role badge
     const role = document.createElement('span');
     role.className = 'role-badge';
     role.textContent = member.role;
 
-    const bio = document.createElement('p');
-    bio.className = 'team-bio';
-    bio.textContent = member.bio || 'Adoreme Community Leader';
-
-    card.append(wrapper, name, role, bio);
+    // Add only the picture, name, and role badge
+    card.append(wrapper, name, role);
     container.appendChild(card);
   });
 }
+
 
 
 /* ====================================================================
