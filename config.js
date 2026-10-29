@@ -46,6 +46,13 @@ export const CONFIG = {
       accent: 'purple'
     },
     {
+      name: 'π',
+      role: 'YOUR ROLE',
+      bio: '',
+      avatar: './icons/π.png',
+      accent: 'cyan'
+    },
+    {
       name: 'Sparsh',
       role: 'SPARSHYY',
       bio: 'Sparshyy',
