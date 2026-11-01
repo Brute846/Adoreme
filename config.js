@@ -47,7 +47,7 @@ export const CONFIG = {
     },
     {
       name: 'π',
-      role: 'YOUR ROLE',
+      role: GHOOK',
       bio: '',
       avatar: './icons/π.png',
       accent: 'cyan'
@@ -65,13 +65,6 @@ export const CONFIG = {
       bio: 'The Wild One',
       avatar: './icons/snowie.png',
       accent: 'blue'
-    },
-    {
-      name: 'Chirag',
-      role: 'KING OF HELL',
-      bio: 'King of Hell',
-      avatar: './icons/chirag.png',
-      accent: 'orange'
     },
     {
       name: 'Yves',
