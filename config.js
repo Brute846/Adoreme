@@ -47,7 +47,7 @@ export const CONFIG = {
     },
     {
       name: 'π',
-      role: GHOOK',
+      role: 'GAHOOK',
       bio: '',
       avatar: './icons/π.png',
       accent: 'cyan'
