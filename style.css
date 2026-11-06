@@ -1012,3 +1012,244 @@ section {
     max-width: 1100px;
   }
 }
+
+
+/* ==========================================
+   ADOREME — MOONLIT ROSE DESIGN THEME
+   ========================================== */
+
+:root {
+  --bg-darkest: #211321;
+  --bg-burgundy: #392238;
+  --bg-card: rgba(255, 231, 243, 0.12);
+  --bg-card-hover: rgba(255, 225, 240, 0.2);
+
+  --accent-pink: #e85b9b;
+  --accent-magenta: #b83275;
+  --accent-glow: rgba(232, 91, 155, 0.35);
+
+  --accent-gold: #e7a7bd;
+  --accent-gold-glow: rgba(231, 167, 189, 0.3);
+  --accent-red: #c75a83;
+  --accent-red-glow: rgba(199, 90, 131, 0.3);
+  --accent-cyan: #bd8ab5;
+  --accent-cyan-glow: rgba(189, 138, 181, 0.3);
+  --accent-white: #fff0f7;
+  --accent-white-glow: rgba(255, 240, 247, 0.3);
+
+  --border-subtle: rgba(255, 190, 220, 0.2);
+  --border-bright: rgba(255, 170, 210, 0.55);
+
+  --text-primary: #fff5fa;
+  --text-secondary: #f2c9df;
+  --text-muted: #c9a8bd;
+}
+
+/* Main background */
+html {
+  background-color: #211321;
+  color: #fff5fa;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 50% 0%, #85516f 0%, transparent 48%),
+    radial-gradient(ellipse at 10% 50%, #56334f 0%, transparent 55%),
+    linear-gradient(145deg, #38243c, #211321 75%);
+}
+
+/* Ambient glow */
+.glow-top {
+  background: radial-gradient(circle, rgba(255, 190, 220, 0.4), transparent 70%);
+}
+
+.glow-center {
+  background: radial-gradient(circle, rgba(205, 125, 170, 0.3), transparent 70%);
+}
+
+.glow-bottom {
+  background: radial-gradient(circle, rgba(232, 91, 155, 0.25), transparent 70%);
+}
+
+/* Brand gradient */
+.gradient-brand {
+  background-image: linear-gradient(
+    135deg,
+    #fff5fa,
+    #f6bfdc 40%,
+    #d65b98 75%,
+    #a52c70
+  );
+}
+
+/* Header */
+.site-header {
+  background: rgba(42, 25, 43, 0.82);
+}
+
+.brand-text {
+  background: linear-gradient(90deg, #fff5fa, #e8a1c5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn-nav,
+.mobile-cta {
+  background: linear-gradient(135deg, #e985b5, #a83d78);
+  box-shadow: 0 0 18px rgba(232, 133, 181, 0.35);
+}
+
+/* Mobile navigation */
+.mobile-drawer {
+  background: rgba(42, 25, 43, 0.97);
+}
+
+.mobile-link {
+  border-bottom-color: rgba(255, 190, 220, 0.15);
+}
+
+/* Hero */
+.hero-pill {
+  background: rgba(255, 220, 237, 0.12);
+  color: #ffe5f1;
+}
+
+.hero-subtitle {
+  color: #f2c9df;
+}
+
+/* Buttons */
+.btn-primary {
+  background: linear-gradient(135deg, #f19ac3, #c34d89, #8e315f);
+  color: #fff;
+  box-shadow: 0 0 25px rgba(232, 133, 181, 0.4);
+}
+
+.btn-secondary,
+.btn-tertiary {
+  background: rgba(255, 225, 240, 0.1);
+  color: #fff0f7;
+  border-color: rgba(255, 190, 220, 0.4);
+}
+
+.btn-tertiary:hover {
+  border-color: #e8a1c5;
+  box-shadow: 0 0 18px rgba(232, 133, 181, 0.3);
+}
+
+/* Section headings */
+.section-eyebrow,
+.footer-heading {
+  color: #f09bc2;
+}
+
+.section-desc {
+  color: #e8c5d9;
+}
+
+/* Feature cards */
+.feature-card {
+  background: rgba(255, 226, 241, 0.1);
+  border-color: rgba(255, 190, 220, 0.25);
+}
+
+.feature-title {
+  color: #fff0f7;
+}
+
+.feature-text {
+  color: #dfbfd1;
+}
+
+/* Team cards */
+.team-card {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 220, 239, 0.15),
+    rgba(70, 37, 66, 0.65)
+  );
+  border-color: rgba(255, 190, 220, 0.3);
+  box-shadow: 0 8px 25px rgba(15, 5, 18, 0.2);
+}
+
+.team-card:hover,
+.team-card:active {
+  box-shadow: 0 15px 35px rgba(232, 91, 155, 0.2);
+}
+
+.team-name {
+  color: #fff4fa;
+}
+
+.role-badge {
+  background: rgba(255, 225, 240, 0.1);
+}
+
+/* Team accent colours */
+.team-card[data-accent="gold"] {
+  --role-accent: #f2b6d0;
+  --role-glow: rgba(242, 182, 208, 0.3);
+}
+
+.team-card[data-accent="red"] {
+  --role-accent: #e68cac;
+  --role-glow: rgba(230, 140, 172, 0.3);
+}
+
+.team-card[data-accent="cyan"] {
+  --role-accent: #d39bc5;
+  --role-glow: rgba(211, 155, 197, 0.3);
+}
+
+.team-card[data-accent="magenta"] {
+  --role-accent: #f18dbb;
+  --role-glow: rgba(241, 141, 187, 0.3);
+}
+
+/* Events */
+.event-card,
+.accordion-item {
+  background: rgba(255, 226, 241, 0.1);
+  border-color: rgba(255, 190, 220, 0.25);
+}
+
+.event-time,
+.accordion-chevron {
+  color: #f09bc2;
+}
+
+.event-title,
+.accordion-header {
+  color: #fff0f7;
+}
+
+.event-desc,
+.accordion-content p {
+  color: #e8c5d9;
+}
+
+.event-btn {
+  background: rgba(232, 133, 181, 0.15);
+  border-color: rgba(255, 190, 220, 0.4);
+}
+
+/* Footer */
+.site-footer {
+  background: rgba(35, 20, 37, 0.95);
+  border-top-color: rgba(255, 190, 220, 0.2);
+}
+
+.footer-links a {
+  color: #e8c5d9;
+}
+
+.footer-bottom {
+  border-top-color: rgba(255, 190, 220, 0.15);
+}
+
+/* Softer selection colour */
+::selection {
+  background: #e985b5;
+  color: #281529;
+}
+
