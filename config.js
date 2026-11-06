@@ -1,4 +1,3 @@
-
 export const CONFIG = {
   DISCORD_INVITE_URL: 'https://discord.gg/adoreme',
 
@@ -23,6 +22,13 @@ export const CONFIG = {
       bio: 'The Cursed Drug',
       avatar: './icons/larissa.png',
       accent: 'magenta'
+    },
+    {
+      name: 'Tara',
+      role: 'CLASSY WINE',
+      bio: 'Classy Wine',
+      avatar: './icons/tara.png',
+      accent: 'pink'
     },
     {
       name: 'Brute',
@@ -72,6 +78,13 @@ export const CONFIG = {
       bio: 'Aura',
       avatar: './icons/yves.png',
       accent: 'pink'
+    },
+    {
+      name: 'Pain',
+      role: 'CAN OF CHAOS',
+      bio: 'Can of Chaos',
+      avatar: './icons/pain.png',
+      accent: 'red'
     }
   ],
 
