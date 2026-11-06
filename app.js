@@ -1,3 +1,4 @@
+
 import { CONFIG } from './config.js';
 
 /* ====================================================================
@@ -5,17 +6,23 @@ import { CONFIG } from './config.js';
    ==================================================================== */
 function initLinks() {
   const joinTriggers = document.querySelectorAll('.join-discord-trigger');
+
   joinTriggers.forEach((el) => {
     el.href = CONFIG.DISCORD_INVITE_URL || 'https://discord.gg/adoreme';
-    // Fallback protection: inform if clicked with placeholder
-    el.addEventListener('click', (e) => {
-      if (el.href.includes('discord.gg/adoreme') && CONFIG.DISCORD_INVITE_URL === "https://discord.gg/adoreme") {
-        console.info('[Adoreme] Using default Discord invite link:', CONFIG.DISCORD_INVITE_URL);
+
+    el.addEventListener('click', () => {
+      if (
+        el.href.includes('discord.gg/adoreme') &&
+        CONFIG.DISCORD_INVITE_URL === 'https://discord.gg/adoreme'
+      ) {
+        console.info(
+          '[Adoreme] Using default Discord invite link:',
+          CONFIG.DISCORD_INVITE_URL
+        );
       }
     });
   });
 
-  // Footer year dynamic injection
   const yearEl = document.getElementById('currentYear');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 }
@@ -26,9 +33,10 @@ function initLinks() {
 function initMobileNavigation() {
   const toggleBtn = document.getElementById('menuToggle');
   const drawer = document.getElementById('mobileDrawer');
-  const mobileLinks = drawer.querySelectorAll('a');
 
   if (!toggleBtn || !drawer) return;
+
+  const mobileLinks = drawer.querySelectorAll('a');
 
   function closeMenu() {
     toggleBtn.setAttribute('aria-expanded', 'false');
@@ -37,7 +45,9 @@ function initMobileNavigation() {
   }
 
   toggleBtn.addEventListener('click', () => {
-    const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+    const isExpanded =
+      toggleBtn.getAttribute('aria-expanded') === 'true';
+
     toggleBtn.setAttribute('aria-expanded', (!isExpanded).toString());
     drawer.classList.toggle('open');
     drawer.setAttribute('aria-hidden', isExpanded.toString());
@@ -49,9 +59,8 @@ function initMobileNavigation() {
 }
 
 /* ====================================================================
-   3. POPULATE TEAM SECTION (With Role Accents & Smooth Fallbacks)
+   3. POPULATE TEAM SECTION — COMPACT RECTANGULAR LAYOUT
    ==================================================================== */
-
 function renderTeam() {
   const container = document.getElementById('teamContainer');
   if (!container) return;
@@ -60,10 +69,10 @@ function renderTeam() {
 
   CONFIG.TEAM.forEach((member, index) => {
     const card = document.createElement('article');
-    card.className = 'team-card';
+    card.className = 'team-card team-card-horizontal';
     card.dataset.accent = member.accent || 'magenta';
     card.setAttribute('role', 'listitem');
-    card.style.animationDelay = `${index * 80}ms`;
+    card.style.animationDelay = `${index * 60}ms`;
 
     // Profile picture
     const wrapper = document.createElement('div');
@@ -75,7 +84,7 @@ function renderTeam() {
     avatar.alt = `${member.name} icon`;
     avatar.loading = 'lazy';
 
-    // Fallback if the profile picture fails to load
+    // Fallback if profile picture fails
     avatar.onerror = () => {
       avatar.onerror = null;
       avatar.src =
@@ -96,13 +105,16 @@ function renderTeam() {
     role.className = 'role-badge';
     role.textContent = member.role;
 
-    // Add only the picture, name, and role badge
-    card.append(wrapper, name, role);
+    // Name and role container
+    const details = document.createElement('div');
+    details.className = 'team-details';
+    details.append(name, role);
+
+    // Assemble card
+    card.append(wrapper, details);
     container.appendChild(card);
   });
 }
-
-
 
 /* ====================================================================
    4. POPULATE COMMUNITY EVENTS
@@ -132,14 +144,17 @@ function renderEvents() {
     container.appendChild(card);
   });
 
-  // Event trigger listener
   container.querySelectorAll('.event-action-trigger').forEach((btn) => {
     btn.addEventListener('click', () => {
       const link = btn.getAttribute('data-link');
+
       if (link && link.trim() !== '') {
         window.open(link, '_blank', 'noopener,noreferrer');
       } else {
-        openEventModal('Server Schedule Notice', 'This event takes place directly inside our Discord server voice channels. Tap below to join our Discord!');
+        openEventModal(
+          'Server Schedule Notice',
+          'This event takes place directly inside our Discord server voice channels. Tap below to join our Discord!'
+        );
       }
     });
   });
@@ -171,20 +186,26 @@ function renderFAQ() {
     container.appendChild(item);
   });
 
-  // Accordion Expand/Collapse Behavior
   const headers = container.querySelectorAll('.accordion-header');
+
   headers.forEach((header) => {
     header.addEventListener('click', () => {
       const item = header.parentElement;
       const content = item.querySelector('.accordion-content');
-      const isExpanded = header.getAttribute('aria-expanded') === 'true';
+      const isExpanded =
+        header.getAttribute('aria-expanded') === 'true';
 
-      // Close all other items
+      // Close other items
       container.querySelectorAll('.accordion-item').forEach((otherItem) => {
         if (otherItem !== item) {
           otherItem.classList.remove('active');
-          otherItem.querySelector('.accordion-header').setAttribute('aria-expanded', 'false');
-          otherItem.querySelector('.accordion-content').style.maxHeight = null;
+          otherItem
+            .querySelector('.accordion-header')
+            .setAttribute('aria-expanded', 'false');
+
+          otherItem.querySelector(
+            '.accordion-content'
+          ).style.maxHeight = null;
         }
       });
 
@@ -210,23 +231,33 @@ const modalTitle = document.getElementById('modalTitle');
 const modalBody = document.getElementById('modalBody');
 
 function openEventModal(title, message) {
-  if (title) modalTitle.textContent = title;
-  if (message) modalBody.textContent = message;
+  if (!modal) return;
+
+  if (title && modalTitle) modalTitle.textContent = title;
+  if (message && modalBody) modalBody.textContent = message;
+
   modal.classList.add('active');
   modal.setAttribute('aria-hidden', 'false');
 }
 
 function closeEventModal() {
+  if (!modal) return;
+
   modal.classList.remove('active');
   modal.setAttribute('aria-hidden', 'true');
 }
 
 function initEventModal() {
   const liveEventBtn = document.getElementById('viewEventBtn');
+
   if (liveEventBtn) {
     liveEventBtn.addEventListener('click', () => {
       if (CONFIG.EVENT_URL && CONFIG.EVENT_URL.trim() !== '') {
-        window.open(CONFIG.EVENT_URL, '_blank', 'noopener,noreferrer');
+        window.open(
+          CONFIG.EVENT_URL,
+          '_blank',
+          'noopener,noreferrer'
+        );
       } else {
         openEventModal(
           'No Live Event In Progress',
@@ -247,23 +278,29 @@ function initEventModal() {
   }
 
   window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('active')) {
+    if (
+      e.key === 'Escape' &&
+      modal &&
+      modal.classList.contains('active')
+    ) {
       closeEventModal();
     }
   });
 }
 
 /* ====================================================================
-   7. AMBIENT PARTICLES & ROSE PETALS CANVAS (Mobile Optimized)
+   7. AMBIENT PARTICLES & ROSE PETALS CANVAS
    ==================================================================== */
 function initAmbientCanvas() {
   const canvas = document.getElementById('ambient-canvas');
   if (!canvas) return;
+
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
-  // Check user preference for reduced motion
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) {
     return;
   }
 
@@ -275,7 +312,6 @@ function initAmbientCanvas() {
     height = canvas.height = window.innerHeight;
   });
 
-  // Mobile device optimization: fewer particles on narrow screens
   const isMobile = width < 768;
   const particleCount = isMobile ? 18 : 35;
   const elements = [];
@@ -288,13 +324,13 @@ function initAmbientCanvas() {
     reset(initial = false) {
       this.x = Math.random() * width;
       this.y = initial ? Math.random() * height : -20;
-      this.size = Math.random() * 8 + 4; // Petal/mote size
+      this.size = Math.random() * 8 + 4;
       this.speedY = Math.random() * 0.7 + 0.3;
       this.speedX = Math.random() * 0.6 - 0.3;
       this.rotation = Math.random() * Math.PI * 2;
       this.rotationSpeed = (Math.random() - 0.5) * 0.02;
       this.opacity = Math.random() * 0.5 + 0.2;
-      this.isPetal = Math.random() > 0.4; // 60% rose petals, 40% neon motes
+      this.isPetal = Math.random() > 0.4;
     }
 
     update() {
@@ -302,7 +338,11 @@ function initAmbientCanvas() {
       this.x += Math.sin(this.y * 0.01) * 0.4 + this.speedX;
       this.rotation += this.rotationSpeed;
 
-      if (this.y > height + 20 || this.x < -20 || this.x > width + 20) {
+      if (
+        this.y > height + 20 ||
+        this.x < -20 ||
+        this.x > width + 20
+      ) {
         this.reset();
       }
     }
@@ -314,15 +354,27 @@ function initAmbientCanvas() {
       ctx.globalAlpha = this.opacity;
 
       if (this.isPetal) {
-        // Draw soft romantic rose petal curve
         ctx.fillStyle = '#ff2a85';
         ctx.beginPath();
         ctx.moveTo(0, 0);
-        ctx.bezierCurveTo(this.size, -this.size / 2, this.size * 1.2, this.size, 0, this.size * 1.4);
-        ctx.bezierCurveTo(-this.size * 1.2, this.size, -this.size, -this.size / 2, 0, 0);
+        ctx.bezierCurveTo(
+          this.size,
+          -this.size / 2,
+          this.size * 1.2,
+          this.size,
+          0,
+          this.size * 1.4
+        );
+        ctx.bezierCurveTo(
+          -this.size * 1.2,
+          this.size,
+          -this.size,
+          -this.size / 2,
+          0,
+          0
+        );
         ctx.fill();
       } else {
-        // Glowing magenta ambient mote
         ctx.fillStyle = '#ff66b2';
         ctx.beginPath();
         ctx.arc(0, 0, this.size * 0.3, 0, Math.PI * 2);
@@ -339,10 +391,12 @@ function initAmbientCanvas() {
 
   function renderLoop() {
     ctx.clearRect(0, 0, width, height);
-    for (let i = 0; i < elements.length; i++) {
-      elements[i].update();
-      elements[i].draw();
-    }
+
+    elements.forEach((element) => {
+      element.update();
+      element.draw();
+    });
+
     requestAnimationFrame(renderLoop);
   }
 
