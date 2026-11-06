@@ -1,26 +1,13 @@
-
 import { CONFIG } from './config.js';
 
 /* ====================================================================
-   1. GLOBAL LINK HYDRATION (DISCORD & CONFIG)
-   ==================================================================== */
+   1. GLOBAL LINKS
+==================================================================== */
 function initLinks() {
-  const joinTriggers = document.querySelectorAll('.join-discord-trigger');
+  const invite = CONFIG.DISCORD_INVITE_URL || 'https://discord.gg/adoreme';
 
-  joinTriggers.forEach((el) => {
-    el.href = CONFIG.DISCORD_INVITE_URL || 'https://discord.gg/adoreme';
-
-    el.addEventListener('click', () => {
-      if (
-        el.href.includes('discord.gg/adoreme') &&
-        CONFIG.DISCORD_INVITE_URL === 'https://discord.gg/adoreme'
-      ) {
-        console.info(
-          '[Adoreme] Using default Discord invite link:',
-          CONFIG.DISCORD_INVITE_URL
-        );
-      }
-    });
+  document.querySelectorAll('.join-discord-trigger').forEach((el) => {
+    el.href = invite;
   });
 
   const yearEl = document.getElementById('currentYear');
@@ -28,8 +15,8 @@ function initLinks() {
 }
 
 /* ====================================================================
-   2. MOBILE DRAWER NAVIGATION
-   ==================================================================== */
+   2. MOBILE NAVIGATION
+==================================================================== */
 function initMobileNavigation() {
   const toggleBtn = document.getElementById('menuToggle');
   const drawer = document.getElementById('mobileDrawer');
@@ -45,111 +32,116 @@ function initMobileNavigation() {
   }
 
   toggleBtn.addEventListener('click', () => {
-    const isExpanded =
-      toggleBtn.getAttribute('aria-expanded') === 'true';
-
-    toggleBtn.setAttribute('aria-expanded', (!isExpanded).toString());
-    drawer.classList.toggle('open');
-    drawer.setAttribute('aria-hidden', isExpanded.toString());
+    const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+    toggleBtn.setAttribute('aria-expanded', String(!expanded));
+    drawer.classList.toggle('open', !expanded);
+    drawer.setAttribute('aria-hidden', String(expanded));
   });
 
-  mobileLinks.forEach((link) => {
-    link.addEventListener('click', closeMenu);
+  mobileLinks.forEach((link) => link.addEventListener('click', closeMenu));
+
+  document.addEventListener('click', (event) => {
+    if (!drawer.contains(event.target) && !toggleBtn.contains(event.target)) {
+      closeMenu();
+    }
   });
 }
 
 /* ====================================================================
-   3. POPULATE TEAM SECTION — COMPACT RECTANGULAR LAYOUT
-   ==================================================================== */
+   3. TEAM RENDERING
+==================================================================== */
 function renderTeam() {
   const container = document.getElementById('teamContainer');
   if (!container) return;
 
   container.innerHTML = '';
 
-  CONFIG.TEAM.forEach((member, index) => {
+  (CONFIG.TEAM || []).forEach((member, index) => {
     const card = document.createElement('article');
-    card.className = 'team-card team-card-horizontal';
+    card.className = 'team-card';
     card.dataset.accent = member.accent || 'magenta';
     card.setAttribute('role', 'listitem');
     card.style.animationDelay = `${index * 60}ms`;
 
-    // Profile picture
     const wrapper = document.createElement('div');
     wrapper.className = 'team-avatar-wrapper';
 
     const avatar = document.createElement('img');
     avatar.className = 'team-avatar';
-    avatar.src = member.avatar;
+    avatar.src = member.avatar || '';
     avatar.alt = `${member.name} icon`;
     avatar.loading = 'lazy';
-
-    // Fallback if profile picture fails
     avatar.onerror = () => {
       avatar.onerror = null;
-      avatar.src =
-        'https://ui-avatars.com/api/?name=' +
-        encodeURIComponent(member.name) +
+      avatar.src = 'https://ui-avatars.com/api/?name=' +
+        encodeURIComponent(member.name || 'Adoreme') +
         '&background=2b081c&color=ff2a85&size=200&bold=true';
     };
 
     wrapper.appendChild(avatar);
 
-    // Member name
-    const name = document.createElement('h3');
-    name.className = 'team-name';
-    name.textContent = member.name;
-
-    // Role badge
-    const role = document.createElement('span');
-    role.className = 'role-badge';
-    role.textContent = member.role;
-
-    // Name and role container
     const details = document.createElement('div');
     details.className = 'team-details';
-    details.append(name, role);
 
-    // Assemble card
+    const name = document.createElement('h3');
+    name.className = 'team-name';
+    name.textContent = member.name || '';
+
+    const role = document.createElement('span');
+    role.className = 'role-badge';
+    role.textContent = member.role || '';
+
+    details.append(name, role);
     card.append(wrapper, details);
     container.appendChild(card);
   });
 }
 
 /* ====================================================================
-   4. POPULATE COMMUNITY EVENTS
-   ==================================================================== */
+   4. EVENTS
+==================================================================== */
 function renderEvents() {
   const container = document.getElementById('eventsContainer');
   if (!container) return;
 
   container.innerHTML = '';
 
-  CONFIG.EVENTS.forEach((item) => {
+  (CONFIG.EVENTS || []).forEach((item) => {
     const card = document.createElement('article');
     card.className = 'event-card';
 
-    card.innerHTML = `
-      <div class="event-header">
-        <span class="event-time">${item.schedule}</span>
-        ${item.isLive ? '<span class="pulse-indicator" title="Live Now"></span>' : ''}
-      </div>
-      <h3 class="event-title">${item.title}</h3>
-      <p class="event-desc">${item.description}</p>
-      <button class="event-btn event-action-trigger" data-link="${item.link}">
-        <span>View Details</span> &rarr;
-      </button>
-    `;
+    const header = document.createElement('div');
+    header.className = 'event-header';
 
-    container.appendChild(card);
-  });
+    const time = document.createElement('span');
+    time.className = 'event-time';
+    time.textContent = item.schedule || '';
 
-  container.querySelectorAll('.event-action-trigger').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const link = btn.getAttribute('data-link');
+    header.appendChild(time);
 
-      if (link && link.trim() !== '') {
-        window.open(link, '_blank', 'noopener,noreferrer');
+    if (item.isLive) {
+      const live = document.createElement('span');
+      live.className = 'pulse-indicator';
+      live.title = 'Live Now';
+      header.appendChild(live);
+    }
+
+    const title = document.createElement('h3');
+    title.className = 'event-title';
+    title.textContent = item.title || '';
+
+    const description = document.createElement('p');
+    description.className = 'event-desc';
+    description.textContent = item.description || '';
+
+    const button = document.createElement('button');
+    button.className = 'event-btn';
+    button.type = 'button';
+    button.textContent = 'View Details →';
+
+    button.addEventListener('click', () => {
+      if (item.link && item.link.trim()) {
+        window.open(item.link, '_blank', 'noopener,noreferrer');
       } else {
         openEventModal(
           'Server Schedule Notice',
@@ -157,74 +149,70 @@ function renderEvents() {
         );
       }
     });
+
+    card.append(header, title, description, button);
+    container.appendChild(card);
   });
 }
 
 /* ====================================================================
-   5. POPULATE FAQ ACCORDION
-   ==================================================================== */
+   5. FAQ
+==================================================================== */
 function renderFAQ() {
   const container = document.getElementById('faqAccordion');
   if (!container) return;
 
   container.innerHTML = '';
 
-  CONFIG.FAQS.forEach((faq, index) => {
+  (CONFIG.FAQS || []).forEach((faq, index) => {
     const item = document.createElement('div');
     item.className = 'accordion-item';
 
-    item.innerHTML = `
-      <button class="accordion-header" id="faq-header-${index}" aria-expanded="false" aria-controls="faq-body-${index}">
-        <span>${faq.question}</span>
-        <span class="accordion-chevron">⌄</span>
-      </button>
-      <div class="accordion-content" id="faq-body-${index}" role="region" aria-labelledby="faq-header-${index}">
-        <p>${faq.answer}</p>
-      </div>
-    `;
+    const header = document.createElement('button');
+    header.className = 'accordion-header';
+    header.type = 'button';
+    header.id = `faq-header-${index}`;
+    header.setAttribute('aria-expanded', 'false');
+    header.textContent = faq.question || '';
 
-    container.appendChild(item);
-  });
+    const chevron = document.createElement('span');
+    chevron.className = 'accordion-chevron';
+    chevron.textContent = '⌄';
+    header.appendChild(chevron);
 
-  const headers = container.querySelectorAll('.accordion-header');
+    const content = document.createElement('div');
+    content.className = 'accordion-content';
+    content.id = `faq-body-${index}`;
+    content.setAttribute('role', 'region');
 
-  headers.forEach((header) => {
+    const answer = document.createElement('p');
+    answer.textContent = faq.answer || '';
+    content.appendChild(answer);
+
     header.addEventListener('click', () => {
-      const item = header.parentElement;
-      const content = item.querySelector('.accordion-content');
-      const isExpanded =
-        header.getAttribute('aria-expanded') === 'true';
+      const isOpen = header.getAttribute('aria-expanded') === 'true';
 
-      // Close other items
-      container.querySelectorAll('.accordion-item').forEach((otherItem) => {
-        if (otherItem !== item) {
-          otherItem.classList.remove('active');
-          otherItem
-            .querySelector('.accordion-header')
-            .setAttribute('aria-expanded', 'false');
-
-          otherItem.querySelector(
-            '.accordion-content'
-          ).style.maxHeight = null;
-        }
+      container.querySelectorAll('.accordion-item').forEach((other) => {
+        other.classList.remove('active');
+        other.querySelector('.accordion-header').setAttribute('aria-expanded', 'false');
+        other.querySelector('.accordion-content').style.maxHeight = '';
       });
 
-      if (!isExpanded) {
+      if (!isOpen) {
         item.classList.add('active');
         header.setAttribute('aria-expanded', 'true');
-        content.style.maxHeight = content.scrollHeight + 'px';
-      } else {
-        item.classList.remove('active');
-        header.setAttribute('aria-expanded', 'false');
-        content.style.maxHeight = null;
+        content.style.maxHeight = `${content.scrollHeight}px`;
       }
     });
+
+    item.append(header, content);
+    container.appendChild(item);
   });
 }
 
 /* ====================================================================
-   6. EVENT LIVE MODAL CONTROLLER
-   ==================================================================== */
+   6. EVENT MODAL
+==================================================================== */
 const modal = document.getElementById('eventModal');
 const modalClose = document.getElementById('closeModalBtn');
 const modalTitle = document.getElementById('modalTitle');
@@ -232,17 +220,15 @@ const modalBody = document.getElementById('modalBody');
 
 function openEventModal(title, message) {
   if (!modal) return;
-
-  if (title && modalTitle) modalTitle.textContent = title;
-  if (message && modalBody) modalBody.textContent = message;
-
+  if (modalTitle && title) modalTitle.textContent = title;
+  if (modalBody && message) modalBody.textContent = message;
   modal.classList.add('active');
   modal.setAttribute('aria-hidden', 'false');
+  if (modalClose) modalClose.focus();
 }
 
 function closeEventModal() {
   if (!modal) return;
-
   modal.classList.remove('active');
   modal.setAttribute('aria-hidden', 'true');
 }
@@ -252,160 +238,113 @@ function initEventModal() {
 
   if (liveEventBtn) {
     liveEventBtn.addEventListener('click', () => {
-      if (CONFIG.EVENT_URL && CONFIG.EVENT_URL.trim() !== '') {
-        window.open(
-          CONFIG.EVENT_URL,
-          '_blank',
-          'noopener,noreferrer'
-        );
+      if (CONFIG.EVENT_URL && CONFIG.EVENT_URL.trim()) {
+        window.open(CONFIG.EVENT_URL, '_blank', 'noopener,noreferrer');
       } else {
         openEventModal(
-          'No Live Event In Progress',
-          'We do not currently have a live stage running. Head into the server lounge to chat with members and catch the next scheduled voice night!'
+          'No Live Event Scheduled',
+          'There is no live stream or voice stage happening at this exact moment. Join our Discord community to get notified when the next event begins!'
         );
       }
     });
   }
 
-  if (modalClose) {
-    modalClose.addEventListener('click', closeEventModal);
-  }
+  if (modalClose) modalClose.addEventListener('click', closeEventModal);
 
   if (modal) {
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeEventModal();
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) closeEventModal();
     });
   }
 
-  window.addEventListener('keydown', (e) => {
-    if (
-      e.key === 'Escape' &&
-      modal &&
-      modal.classList.contains('active')
-    ) {
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && modal?.classList.contains('active')) {
       closeEventModal();
     }
   });
 }
 
 /* ====================================================================
-   7. AMBIENT PARTICLES & ROSE PETALS CANVAS
-   ==================================================================== */
+   7. AMBIENT PARTICLES
+==================================================================== */
 function initAmbientCanvas() {
   const canvas = document.getElementById('ambient-canvas');
   if (!canvas) return;
 
   const ctx = canvas.getContext('2d');
-  if (!ctx) return;
+  if (!ctx || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  if (
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  ) {
-    return;
-  }
+  let width = 0;
+  let height = 0;
+  let animationId;
 
-  let width = (canvas.width = window.innerWidth);
-  let height = (canvas.height = window.innerHeight);
-
-  window.addEventListener('resize', () => {
+  function resize() {
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
-  });
-
-  const isMobile = width < 768;
-  const particleCount = isMobile ? 18 : 35;
-  const elements = [];
-
-  class FloatingParticle {
-    constructor() {
-      this.reset(true);
-    }
-
-    reset(initial = false) {
-      this.x = Math.random() * width;
-      this.y = initial ? Math.random() * height : -20;
-      this.size = Math.random() * 8 + 4;
-      this.speedY = Math.random() * 0.7 + 0.3;
-      this.speedX = Math.random() * 0.6 - 0.3;
-      this.rotation = Math.random() * Math.PI * 2;
-      this.rotationSpeed = (Math.random() - 0.5) * 0.02;
-      this.opacity = Math.random() * 0.5 + 0.2;
-      this.isPetal = Math.random() > 0.4;
-    }
-
-    update() {
-      this.y += this.speedY;
-      this.x += Math.sin(this.y * 0.01) * 0.4 + this.speedX;
-      this.rotation += this.rotationSpeed;
-
-      if (
-        this.y > height + 20 ||
-        this.x < -20 ||
-        this.x > width + 20
-      ) {
-        this.reset();
-      }
-    }
-
-    draw() {
-      ctx.save();
-      ctx.translate(this.x, this.y);
-      ctx.rotate(this.rotation);
-      ctx.globalAlpha = this.opacity;
-
-      if (this.isPetal) {
-        ctx.fillStyle = '#ff2a85';
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.bezierCurveTo(
-          this.size,
-          -this.size / 2,
-          this.size * 1.2,
-          this.size,
-          0,
-          this.size * 1.4
-        );
-        ctx.bezierCurveTo(
-          -this.size * 1.2,
-          this.size,
-          -this.size,
-          -this.size / 2,
-          0,
-          0
-        );
-        ctx.fill();
-      } else {
-        ctx.fillStyle = '#ff66b2';
-        ctx.beginPath();
-        ctx.arc(0, 0, this.size * 0.3, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      ctx.restore();
-    }
   }
 
-  for (let i = 0; i < particleCount; i++) {
-    elements.push(new FloatingParticle());
-  }
+  resize();
+  window.addEventListener('resize', resize);
 
-  function renderLoop() {
+  const count = width < 768 ? 12 : 25;
+  const particles = Array.from({ length: count }, () => ({
+    x: Math.random() * width,
+    y: Math.random() * height,
+    size: Math.random() * 5 + 2,
+    speed: Math.random() * 0.45 + 0.2,
+    drift: Math.random() * 0.5 - 0.25,
+    opacity: Math.random() * 0.35 + 0.15,
+    heart: Math.random() > 0.72
+  }));
+
+  function draw() {
     ctx.clearRect(0, 0, width, height);
 
-    elements.forEach((element) => {
-      element.update();
-      element.draw();
+    particles.forEach((p) => {
+      p.y += p.speed;
+      p.x += p.drift + Math.sin(p.y * 0.01) * 0.25;
+
+      if (p.y > height + 15) {
+        p.y = -15;
+        p.x = Math.random() * width;
+      }
+      if (p.x < -15) p.x = width + 15;
+      if (p.x > width + 15) p.x = -15;
+
+      ctx.save();
+      ctx.globalAlpha = p.opacity;
+      ctx.fillStyle = '#ff2a85';
+
+      if (p.heart) {
+        ctx.translate(p.x, p.y);
+        ctx.scale(p.size / 8, p.size / 8);
+        ctx.beginPath();
+        ctx.moveTo(0, 3);
+        ctx.bezierCurveTo(-8, -3, -5, -8, 0, -3);
+        ctx.bezierCurveTo(5, -8, 8, -3, 0, 3);
+        ctx.fill();
+      } else {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * 0.35, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
     });
 
-    requestAnimationFrame(renderLoop);
+    animationId = requestAnimationFrame(draw);
   }
 
-  requestAnimationFrame(renderLoop);
+  draw();
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) cancelAnimationFrame(animationId);
+    else draw();
+  });
 }
 
 /* ====================================================================
-   INITIALIZE ON DOM CONTENT LOADED
-   ==================================================================== */
+   INITIALIZE
+==================================================================== */
 document.addEventListener('DOMContentLoaded', () => {
   initLinks();
   initMobileNavigation();
