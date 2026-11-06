@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
 /* ====================================================================
 ADOREME — DARK BURGUNDY & NEON MAGENTA DESIGN SYSTEM
 ==================================================================== */
@@ -34,7 +36,7 @@ ADOREME — DARK BURGUNDY & NEON MAGENTA DESIGN SYSTEM
 --text-muted: #ab8598;
 
 /* Typography Families */
---font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+--font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 
 /* Layout & Transitions */
@@ -891,4 +893,14 @@ text-align: center;
 padding-top: 24px;
 border-top: 1px solid rgba(255, 42, 133, 0.1);
 color: var(--text-muted);
-font-size: 0.85r
+font-size: 0.85rem;
+}
+
+
+/* Keep form controls consistent with the site typography */
+button,
+input,
+textarea,
+select {
+    font-family: var(--font-body);
+  }
